@@ -1,4 +1,5 @@
 # NhkReg2026 - Мой вариант решения регионального этапа чемпионата "Профессионалы" по СиСА 2026 года. Alt + Ecorouter
+Ниже были использованы материалы с sysahelper.ru
 
 ## МОДУЛЬ Б:
 Таблица адресации:
@@ -223,3 +224,7 @@ rtr-a(config)#write memory
 <img width="631" height="158" alt="изображение" src="https://github.com/user-attachments/assets/aa501d3a-ab2b-44a8-8cd4-3797721610d5" />
 
 <img width="799" height="252" alt="изображение" src="https://github.com/user-attachments/assets/bec21b8b-140d-40be-986a-4fdc504173bc" />
+
+
+### 2. Настройка fw-cod
+
