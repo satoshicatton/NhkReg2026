@@ -2,6 +2,9 @@
 Ниже были использованы материалы с sysahelper.ru
 
 ## МОДУЛЬ Б:
+
+Важно! В модуле Б, при настройке коммутации на свитчах sw*-cod, sw*-a надо в файл /etc/net/ifaces/mgmt/options добавить OVS_OPTIONS='vlan_mode=native_untagged', иначе после перезагрузки устройства эта настройка сбросится.
+
 Таблица адресации:
 
 <img width="718" height="514" alt="изображение" src="https://github.com/user-attachments/assets/bada74c4-5295-4cd5-9e14-5693972206dc" />
@@ -226,5 +229,123 @@ rtr-a(config)#write memory
 <img width="799" height="252" alt="изображение" src="https://github.com/user-attachments/assets/bec21b8b-140d-40be-986a-4fdc504173bc" />
 
 
-### 2. Настройка fw-cod
 
+### 2. fw-cod (ideco):
+
+#### Настройка интерфейса управления
+
+-   Для корректной идентификации сетевой карты используйте MAC-адрес сетевой карты
+-   Для настройки Ideco NGFW Novum через веб-интерфейс настройте Control Plane интерфейс в локальном меню
+    -   Control Plane - интерфейс администрирования, используется для настройки NGFW Novum через браузер и должен иметь свой выход в Интернет
+-   Выполните вход из под созданного пользователя **admin** с паролем **P@ssw0rd1234**
+
+ <img width="458" height="228" alt="изображение" src="https://github.com/user-attachments/assets/1ac743b6-3c07-4d25-9201-84ff1c13b3cb" />
+
+
+-   Перейдите в раздел **Ethernet-интерфейсы (3)** → **Создать интерфейс (3)**:
+
+<img width="841" height="800" alt="изображение" src="https://github.com/user-attachments/assets/5103c4ef-0cd1-4425-b2c9-7197a0b1d637" />
+
+
+##### Пояснения в контексте текущего задания:
+
+-   Поскольку Ideco рекомендуется настраивать через веб-интерфейс, надо настроить IP-адрес для этого доступа
+-   Поскольку в сod.ssa2026.region между fw-cod и sw1-cod необходимо организовать агрегированное соединение 802.3ad, (**не актуально, от 802.3ad в задании отказались**)
+    -   а также за маршрутизацию между VLAN-ами по топологии будет отвечать fw-cod,
+    -   то так называемые под-интерфейсы необходимо реализовывать поверх агрегированного канала 802.3ad,
+    -   в консоле Ideco - это реализовать не получится, править конфигурационные файлы в ideco плохо, можно лишиться технической поддержки.
+-   Поэтому как один из способов доступа к веб-интерфейсу это:
+    -   использование интерфейса в сторону rtr-cod,
+    -   после реализации туннеля и маршрутизации между rtr-cod и rtr-a, 
+    -   а также коммутации между sw1-a и sw2-a,
+    -   у нас появится возможность конфигурировать fw-cod через веб-интерфейс, например с cli1-a или cli2-a,
+    -   вследствии чего и полная связность между устройствами сod.ssa2026.region и office.ssa2026.region
+
+##### Продолжение настройки:
+
+-   Выберите порт для доступа к веб-интерфейсу:
+    -   сравнив МАС-адреса на уровне виртуальной машины
+
+<img width="1111" height="731" alt="изображение" src="https://github.com/user-attachments/assets/e9e28d9c-3e66-45f4-bd34-26a98c045c69" />
+
+-   Выберите порт для доступа к веб-интерфейсу:
+    -   в текущем случае выбирается порт в сторону виртуальной машины **rtr-cod**
+
+<img width="848" height="253" alt="изображение" src="https://github.com/user-attachments/assets/f8c0c79b-19b9-4cc1-809a-b9fb1ee6468f" />
+
+
+-   Введите имя интерфейса:
+
+<img width="552" height="97" alt="изображение" src="https://github.com/user-attachments/assets/4d84c432-006f-445f-ad11-bc236b20d5a8" />
+
+
+-   Выберите роль **LAN**:
+
+<img width="398" height="163" alt="изображение" src="https://github.com/user-attachments/assets/1607c709-c5fd-4308-8684-155efd4f44d4" />
+
+
+-   Выберите **Корневой контекст**:
+
+<img width="365" height="133" alt="изображение" src="https://github.com/user-attachments/assets/1a5bd115-54f8-4126-a2f5-b0a217b1437b" />
+
+
+-   Настройте локальную сеть **Вручную**:
+
+<img width="378" height="159" alt="изображение" src="https://github.com/user-attachments/assets/ec310178-3984-4b24-9d51-298dca41e604" />
+
+
+-   Ведите локальный IP-адрес и маску подсети в формате **ip/маска** и нажмите **Enter**:
+
+<img width="429" height="112" alt="изображение" src="https://github.com/user-attachments/assets/f3cf772e-0124-41a8-855f-cfab4d4d8df8" />
+
+
+-   Проверить можно выбрав соответствующий пункт меню:
+
+<img width="961" height="347" alt="изображение" src="https://github.com/user-attachments/assets/aa32c0cf-bf78-40e0-8ab9-c12db78fb3cc" />
+
+
+-   Также при вводе с клавиатуры "**с**" и нажатие **Enter** или же сочетание клавич **Ctrl + D**:
+    -   можно увидеть адрес и порт для доступа к веб-интерфейсу для дальнейшей настройки
+
+<img width="740" height="376" alt="изображение" src="https://github.com/user-attachments/assets/4a5e01fd-37ca-40e7-863d-2d9bf1fbe380" />
+
+### rtr-cod (ecorouter):
+
+#### Базовая настройка BGP:
+
+-   Запустите протокол BGP, указав нужную автономную систему, командой: **router bgp <№>**:
+
+```
+rtr-cod(config)#router  bgp 64500
+rtr-cod(config-router)#
+```
+
+-   Указать уникальный идентификатор маршрутизатора в протоколе BGP, командой: **bgp router-id <IP>**:
+
+```
+rtr-cod(config-router)#bgp router-id 178.207.179.4
+rtr-cod(config-router)#
+```
+
+-   Сконфигурируйте BGP соседство c Интернет провайдером **ISP**, указав адрес соседа и номер локальной AS, используя команду: **neighbor <NEIGHBOR\_IP> remote-as <$>**:
+
+```
+rtr-cod(config-router)#neighbor 178.207.179.1 remote-as 31133
+rtr-cod(config-router)#exit
+rtr-cod(config)#write memory
+Building configuration...
+
+rtr-cod(config)#
+```
+
+-   Проверить состояние всех соединений BGP можно командой **show ip bgp summary** из режима администрирования (**enable**):
+
+<img width="844" height="253" alt="изображение" src="https://github.com/user-attachments/assets/d85932b9-185e-4f9c-8dd8-98435201ab47" />
+
+
+-   Также по условиям задания **rtr-cod** должен получать маршрут по умолчанию по BGP
+-   Проверить маршрут по умолчанию можно командой **show ip route** из режима администрирования (**enable**):
+<img width="755" height="273" alt="изображение" src="https://github.com/user-attachments/assets/aac91464-a47a-460b-81fd-d8848ed94e67" />
+
+
+-   Проверить доступ в сеть Интернет:
