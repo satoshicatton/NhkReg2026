@@ -1,6 +1,8 @@
 # NhkReg2026 - Мой вариант решения регионального этапа чемпионата "Профессионалы" по СиСА 2026 года. Alt + Ecorouter
 Ниже были использованы материалы с sysahelper.ru
 
+Копия - https://www.markdownpaste.com/document/nhkreg2026
+
 ## МОДУЛЬ Б:
 
 Важно! В модуле Б, при настройке коммутации на свитчах sw*-cod, sw*-a надо в файл /etc/net/ifaces/mgmt/options добавить OVS_OPTIONS='vlan_mode=native_untagged', иначе после перезагрузки устройства эта настройка сбросится.
