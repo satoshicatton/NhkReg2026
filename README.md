@@ -1,6 +1,8 @@
 # NhkReg2026 - Мой вариант решения регионального этапа чемпионата "Профессионалы" по СиСА 2026 года. Alt + Ecorouter
 Ниже были использованы материалы с sysahelper.ru
 
+G https://download.cyberprotect.ru/releases/CyberBackup/18.1.39034/Boot_media.iso
+
 Копия - https://www.markdownpaste.com/document/nhkreg2026
 
 ## МОДУЛЬ Б:
